@@ -2,31 +2,21 @@
 
 namespace App\Controller\Race;
 
-use App\Entity\Race;
-use App\Enum\RaceMode;
-use App\Form\RaceFormType;
 use App\Repository\RaceRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/races')]
-#[IsGranted('ROLE_ADMIN')]
+#[Route('/races/current', name: 'race_current', methods: ['GET'])]
+#[IsGranted('PUBLIC_ACCESS')]
 final class CurrentController extends AbstractController
 {
-    public function __construct(
-        private readonly RaceRepository        $races,
-        private readonly EntityManagerInterface $em,
-    ) {}
-
-    #[Route('/current', name: 'race_current', methods: ['GET'])]
-    #[IsGranted('PUBLIC_ACCESS')]
-    public function __invoke(): Response
+    public function __invoke(
+        RaceRepository $races
+    ): Response
     {
-        $race = $this->races->findCurrent();
+        $race = $races->findCurrent();
         return $race
             ? $this->redirectToRoute('race_show', ['id' => $race->id])
             : $this->redirectToRoute('race_index');

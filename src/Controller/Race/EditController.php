@@ -3,29 +3,20 @@
 namespace App\Controller\Race;
 
 use App\Entity\Race;
-use App\Enum\RaceMode;
 use App\Form\RaceFormType;
-use App\Repository\RaceRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/races')]
+#[Route('/races/{id}/edit', name: 'race_edit', requirements: ['id' => '\d+'], methods: ['GET'])]
 #[IsGranted('ROLE_ADMIN')]
 final class EditController extends AbstractController
 {
-    public function __construct(
-        private readonly RaceRepository        $races,
-        private readonly EntityManagerInterface $em,
-    ) {}
-
-    #[Route('/{id}/edit', name: 'race_edit', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function __invoke(Race $race): Response
     {
         $form = $this->createForm(RaceFormType::class, $race);
+
         return $this->render('race/edit.html.twig', ['race' => $race, 'form' => $form]);
     }
 }

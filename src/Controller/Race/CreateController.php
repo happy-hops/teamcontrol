@@ -16,8 +16,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class CreateController extends AbstractController
 {
     public function __invoke(
+        Request $request,
         EntityManagerInterface $em,
-        Request                $request
     ): Response
     {
         $form = $this->createForm(RaceFormType::class);

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Form;
 
@@ -6,6 +6,7 @@ use App\Entity\Driver;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
@@ -36,6 +37,7 @@ class DriverFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Driver::class,
+            'empty_data' => fn(FormInterface $form) => new Driver($form->get('name')->getData() ?? ''),
         ]);
     }
 }

@@ -9,7 +9,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/admin/stations')]
 #[IsGranted('ROLE_ADMIN')]
-class StationController extends AbstractController
+final class StationController extends AbstractController
 {
     #[Route('', name: 'admin_station_index', methods: ['GET'])]
     public function index(): Response

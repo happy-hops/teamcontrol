@@ -18,18 +18,18 @@ class Race
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    public private(set) int $id;
+    private(set) int $id;
 
     #[ORM\Column(length: 255)]
     public string $name {
-        set (string $value) => $this->name = trim($value);
+        set => $this->name = trim($value);
     }
 
     #[ORM\Column(length: 255, unique: true)]
-    public private(set) string $slug;
+    private(set) string $slug;
 
     #[ORM\Column(type: 'integer', enumType: RaceState::class, options: ['default' => 0])]
-    public private(set) RaceState $state = RaceState::Planned;
+    private(set) RaceState $state = RaceState::Planned;
 
     #[ORM\Column(type: 'integer', enumType: RaceMode::class, options: ['default' => 0])]
     public RaceMode $mode;
@@ -62,17 +62,17 @@ class Race
     public ?\DateTimeImmutable $scheduled = null;
 
     #[ORM\Column(name: 'started_at', type: 'datetime_immutable', nullable: true)]
-    public private(set) ?\DateTimeImmutable $startedAt = null;
+    private(set) ?\DateTimeImmutable $startedAt = null;
 
     #[ORM\Column(name: 'finished_at', type: 'datetime_immutable', nullable: true)]
-    public private(set) ?\DateTimeImmutable $finishedAt = null;
+    private(set) ?\DateTimeImmutable $finishedAt = null;
 
     #[ORM\Column(name: 'prebooking_open', options: ['default' => false])]
     public bool $prebookingOpen = false;
 
-    #[ORM\OneToMany(mappedBy: 'race', targetEntity: Team::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Team::class, mappedBy: 'race', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[ORM\OrderBy(['position' => 'ASC'])]
-    public private(set) Collection $teams;
+    private(set) Collection $teams;
 
     public function __construct(
         string   $name,
@@ -137,5 +137,10 @@ class Race
         if (!$this->teams->contains($team)) {
             $this->teams->add($team);
         }
+    }
+
+    public function setSlug(string $slug): void
+    {
+        $this->slug = $slug;
     }
 }

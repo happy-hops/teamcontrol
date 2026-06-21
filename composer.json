@@ -4,7 +4,7 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.4",
+        "php": ">=8.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "doctrine/doctrine-bundle": "^3.2.2",
@@ -15,42 +15,46 @@
         "nelmio/security-bundle": "^3.9",
         "stof/doctrine-extensions-bundle": "^1.15.3",
         "symfony/apache-pack": "^1.0.1",
-        "symfony/asset": "8.0.*",
-        "symfony/asset-mapper": "8.0.*",
-        "symfony/cache": "8.0.*",
-        "symfony/console": "8.0.*",
-        "symfony/doctrine-messenger": "8.0.*",
-        "symfony/dotenv": "8.0.*",
-        "symfony/expression-language": "8.0.*",
-        "symfony/flex": "^2.10",
-        "symfony/form": "8.0.*",
-        "symfony/framework-bundle": "8.0.*",
-        "symfony/mailer": "8.0.*",
-        "symfony/mime": "8.0.*",
+        "symfony/asset": "8.1.*",
+        "symfony/asset-mapper": "8.1.*",
+        "symfony/cache": "8.1.*",
+        "symfony/console": "8.1.*",
+        "symfony/doctrine-messenger": "8.1.*",
+        "symfony/dotenv": "8.1.*",
+        "symfony/expression-language": "8.1.*",
+        "symfony/flex": "^2.11",
+        "symfony/form": "8.1.*",
+        "symfony/framework-bundle": "8.1.*",
+        "symfony/mailer": "8.1.*",
+        "symfony/mime": "8.1.*",
         "symfony/monolog-bundle": "^4.0.2",
-        "symfony/runtime": "8.0.*",
-        "symfony/scheduler": "8.0.*",
-        "symfony/security-bundle": "8.0.*",
-        "symfony/security-csrf": "8.0.*",
+        "symfony/runtime": "8.1.*",
+        "symfony/scheduler": "8.1.*",
+        "symfony/security-bundle": "8.1.*",
+        "symfony/security-csrf": "8.1.*",
         "symfony/stimulus-bundle": "^3.0",
-        "symfony/twig-bundle": "8.0.*",
-        "symfony/validator": "8.0.*",
-        "symfony/yaml": "8.0.*",
+        "symfony/twig-bundle": "8.1.*",
+        "symfony/validator": "8.1.*",
+        "symfony/yaml": "8.1.*",
         "twig/extra-bundle": "^3.24",
         "twig/twig": "^3.26",
         "zenstruck/foundry": "^2.10.1"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^4.3.1",
-        "symfony/debug-bundle": "8.0.*",
+        "phpstan/extension-installer": "^1.4.3",
+        "phpstan/phpstan": "^2.2.2",
+        "phpstan/phpstan-symfony": "^2.0.20",
+        "symfony/debug-bundle": "8.1.*",
         "symfony/maker-bundle": "^1.67",
-        "symfony/stopwatch": "8.0.*",
-        "symfony/var-dumper": "8.0.*",
-        "symfony/web-profiler-bundle": "8.0.*"
+        "symfony/stopwatch": "8.1.*",
+        "symfony/var-dumper": "8.1.*",
+        "symfony/web-profiler-bundle": "8.1.*"
     },
     "config": {
         "allow-plugins": {
             "php-http/discovery": true,
+            "phpstan/extension-installer": true,
             "symfony/flex": true,
             "symfony/runtime": true
         },
@@ -98,7 +102,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "8.0.*"
+            "require": "8.1.*"
         }
     }
 }

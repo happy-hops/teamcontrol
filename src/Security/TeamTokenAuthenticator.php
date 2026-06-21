@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -103,14 +104,17 @@ final class TeamTokenAuthenticator extends AbstractAuthenticator
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
         // Fehlermeldung in die Session, damit das Login-Template sie anzeigen kann
-        $request->getSession()->getFlashBag()->add(
-            'team_error',
-            strtr($exception->getMessageKey(), $exception->getMessageData())
-        );
+        $session = $request->getSession();
+        if ($session instanceof FlashBagAwareSessionInterface) {
+            $session->getFlashBag()->add(
+                'team_error',
+                strtr($exception->getMessageKey(), $exception->getMessageData())
+            );
+        }
 
         // Zurück zum Login, Token-Tab direkt öffnen per URL-Fragment
         return new RedirectResponse(
-            $this->urlGenerator->generate('app_login', ['_fragment' => 'team'])
+            $this->urlGenerator->generate('user_login', ['_fragment' => 'team'])
         );
     }
 }

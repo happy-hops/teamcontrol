@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Enum\RaceMode;
+use App\Enum\RaceMode;
 use App\Entity\Race;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Positive;
@@ -95,6 +96,19 @@ class RaceFormType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => Race::class]);
+        $resolver->setDefaults([
+            'data_class' => Race::class,
+            'empty_data' => fn(FormInterface $form) => new Race(
+                $form->get('name')->getData() ?? '',
+                '',
+                540,
+                170,
+                40,
+                20,
+                45,
+                3,
+                RaceMode::Both
+            ),
+        ]);
     }
 }

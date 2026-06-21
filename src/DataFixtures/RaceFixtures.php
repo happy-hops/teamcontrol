@@ -3,7 +3,6 @@
 namespace App\DataFixtures;
 
 use App\Entity\Race;
-use App\Enum\RaceMode;
 use App\Enum\RaceState;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;

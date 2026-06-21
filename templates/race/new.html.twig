@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Neues Rennen — Teamcontrol{% endblock %}
+
+{% block body %}
+
+    <div class="tc-page-header">
+        <h1>Neues <span>Rennen</span></h1>
+        <a href="{{ path('race_index') }}" class="btn-tc-outline">
+            <i class="bi bi-arrow-left me-1"></i>Zurück
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            {% include 'race/_form.html.twig' with {
+                action: path('race_create')
+            } %}
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'public.html.twig' %}
+
+{% block title %}{{ race.name }} — Live{% endblock %}
+
+{% block body %}
+
+    <div class="d-flex align-items-baseline justify-content-between mb-4">
+        <h1 style="font-size: 1.75rem; margin: 0">{{ race.name }}</h1>
+        {% if race.state.isActive() %}
+            <span class="tc-badge tc-badge-active">Live</span>
+        {% endif %}
+    </div>
+
+    <div class="row g-3" id="teams-grid">
+        {% for team in teams %}
+            <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                <div class="tc-card h-100">
+                    <div class="tc-card-header">
+                        {% if team.position %}
+                            <span style="color: var(--tc-muted)">#{{ team.position }}</span>
+                        {% endif %}
+                        {{ team.name }}
+                    </div>
+                    <table class="tc-table tc-info-table">
+                        <tbody>
+                            <tr>
+                                <td>Strafen</td>
+                                <td>{{ team.penalties|length }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-12">
+                <div class="tc-card p-4 text-center" style="color: var(--tc-muted)">
+                    Noch keine Teams angemeldet.
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

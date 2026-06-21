@@ -1,0 +1,18 @@
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <span>
+        <strong style="color: var(--tc-text); font-family: var(--tc-font-display); letter-spacing: .05em;">TEAMCONTROL</strong>
+        &nbsp;&copy; {{ "now"|date("Y") }}
+        {% if appVersion is defined %}
+            &nbsp;<span style="color: var(--tc-border)">|</span>&nbsp;v{{ appVersion }}
+        {% endif %}
+    </span>
+    <span>
+        Made with <i class="bi bi-heart-fill" style="color: var(--tc-accent)"></i> in Siegburg
+        &mdash;
+        <a href="https://software-berater.net/" target="_blank" rel="noopener" style="color: var(--tc-muted)">software-berater.net</a>
+        {% if is_granted('ROLE_USER') %}
+            &nbsp;<span style="color: var(--tc-border)">|</span>&nbsp;
+            <a href="/docs/api/" target="_blank" rel="noopener" style="color: var(--tc-muted)">API</a>
+        {% endif %}
+    </span>
+</div>

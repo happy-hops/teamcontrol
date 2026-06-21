@@ -1,0 +1,131 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Anmelden — Teamcontrol{% endblock %}
+
+{% block body %}
+    <div class="login-wrapper">
+        <div class="login-box">
+
+            <div class="login-tabs" role="tablist">
+                <button class="login-tab active"
+                        id="tab-admin"
+                        role="tab"
+                        aria-selected="true"
+                        aria-controls="pane-admin"
+                        onclick="switchTab('admin')">
+                    <i class="bi bi-person-lock me-1"></i>Anmeldung
+                </button>
+                <button class="login-tab"
+                        id="tab-team"
+                        role="tab"
+                        aria-selected="false"
+                        aria-controls="pane-team"
+                        onclick="switchTab('team')">
+                    <i class="bi bi-key me-1"></i>Team Token
+                </button>
+            </div>
+
+            <div class="login-card">
+
+                {# ── Pane 1: E-Mail + Passwort ────────────────── #}
+                <div id="pane-admin" class="login-pane active" role="tabpanel" aria-labelledby="tab-admin">
+
+                    <p class="login-hint">
+                        Melde dich mit deiner E-Mail-Adresse und deinem Passwort an.
+                        Hast du einen <strong style="color: var(--tc-text)">Team Token</strong> erhalten?
+                        Dann wechsle oben zu <strong style="color: var(--tc-text)">„Team Token"</strong>.
+                    </p>
+
+                    {% if error %}
+                        <div class="tc-error" role="alert">
+                            <i class="bi bi-exclamation-circle-fill flex-shrink-0"></i>
+                            <span>{{ error.messageKey|trans(error.messageData, 'security') }}</span>
+                        </div>
+                    {% endif %}
+
+                    <form method="post" action="{{ path('user_login') }}" novalidate>
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                        <div class="tc-field">
+                            <label class="tc-label" for="username">E-Mail</label>
+                            <input class="tc-input"
+                                   type="email"
+                                   id="username"
+                                   name="_username"
+                                   value="{{ last_username ?? '' }}"
+                                   placeholder="name@domain.de"
+                                   autocomplete="email"
+                                   autofocus
+                                   required>
+                        </div>
+
+                        <div class="tc-field">
+                            <label class="tc-label" for="password">Passwort</label>
+                            <input class="tc-input"
+                                   type="password"
+                                   id="password"
+                                   name="_password"
+                                   placeholder="••••••••"
+                                   autocomplete="current-password"
+                                   required>
+                        </div>
+
+                        <div class="tc-check">
+                            <input type="checkbox" id="remember_me" name="_remember_me">
+                            <label for="remember_me">Angemeldet bleiben</label>
+                        </div>
+
+                        <button type="submit" class="btn-tc-submit">Anmelden</button>
+                    </form>
+
+                </div>
+
+                {# ── Pane 2: Team Token ───────────────────────── #}
+                <div id="pane-team" class="login-pane" role="tabpanel" aria-labelledby="tab-team">
+
+                    <p class="login-hint">
+                        Du hast von der Rennleitung einen
+                        <strong style="color: var(--tc-text)">Team Token</strong> erhalten?
+                        Gib ihn hier ein, um auf die Ergebnisse deines Teams zuzugreifen.
+                    </p>
+
+                    {{ form_start(tokenForm, { action: path('team_login') }) }}
+                    {{ form_row(tokenForm.teamToken) }}
+                    {{ form_errors(tokenForm) }}
+
+                    <button type="submit" class="btn-tc-submit">Mit Token anmelden</button>
+                    {{ form_end(tokenForm) }}
+
+                </div>
+
+            </div>{# /.login-card #}
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        function switchTab(name) {
+            document.querySelectorAll('.login-tab').forEach(t => {
+                const active = t.id === 'tab-' + name;
+                t.classList.toggle('active', active);
+                t.setAttribute('aria-selected', String(active));
+            });
+            document.querySelectorAll('.login-pane').forEach(p => {
+                p.classList.toggle('active', p.id === 'pane-' + name);
+            });
+        }
+
+        // Bei Validierungsfehler im Token-Tab direkt dorthin springen
+        {% if not tokenForm.vars.valid %}
+        switchTab('team');
+        {% endif %}
+
+        // /login#team öffnet direkt den Token-Tab
+        if (window.location.hash === '#team') {
+            switchTab('team');
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% use 'form_div_layout.html.twig' %}
+
+{# ── Wrapper: Label + Input + Help + Fehler ─────────────────── #}
+{% block form_row %}
+    {% set rowClass = 'tc-field' %}
+    {% if row_attr.class is defined %}
+        {% set rowClass = rowClass ~ ' ' ~ row_attr.class %}
+    {% endif %}
+    <div class="{{ rowClass }}">
+        {{- form_label(form) -}}
+        {{- form_widget(form) -}}
+        {{- form_help(form) -}}
+        {{- form_errors(form) -}}
+    </div>
+{% endblock %}
+
+{# ── Label ───────────────────────────────────────────────────── #}
+{% block form_label %}
+    {% if label is not same as(false) %}
+        {% set existingClass = label_attr.class is defined ? label_attr.class : '' %}
+        {% set label_attr = label_attr|merge({ class: ('tc-label ' ~ existingClass)|trim }) %}
+        {{- parent() -}}
+    {% endif %}
+{% endblock %}
+
+{# ── Text / Email / Password ─────────────────────────────────── #}
+{% block form_widget_simple %}
+    {% set existingClass = attr.class is defined ? attr.class : '' %}
+    {% set attr = attr|merge({ class: ('tc-input ' ~ existingClass)|trim }) %}
+    {{- parent() -}}
+{% endblock %}
+
+{# ── Checkbox (remember me) ──────────────────────────────────── #}
+{% block checkbox_row %}
+    {% set rowClass = 'tc-check' %}
+    {% if row_attr.class is defined %}
+        {% set rowClass = rowClass ~ ' ' ~ row_attr.class %}
+    {% endif %}
+    <div class="{{ rowClass }}">
+        {{- form_widget(form) -}}
+        {{- form_label(form) -}}
+    </div>
+{% endblock %}
+
+{# ── Hilfetext ───────────────────────────────────────────────── #}
+{% block form_help %}
+    {% if help is not empty %}
+        <p class="tc-field-hint">{{ help|trans }}</p>
+    {% endif %}
+{% endblock %}
+
+{# ── Fehler ──────────────────────────────────────────────────── #}
+{% block form_errors %}
+    {% if errors|length > 0 %}
+        {% for error in errors %}
+            <div class="tc-error mt-1" role="alert">
+                <i class="bi bi-exclamation-circle-fill flex-shrink-0"></i>
+                <span>{{ error.message }}</span>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,72 @@
+{#
+    _form.html.twig
+    Wird von new.html.twig und edit.html.twig eingebunden.
+    Erwartet: form (TeamFormType), action (string)
+#}
+{{ form_start(form, { action: action }) }}
+
+    <div class="tc-field">
+        {{ form_label(form.name) }}
+        {{ form_widget(form.name) }}
+        {{ form_errors(form.name) }}
+    </div>
+
+    <div class="tc-field">
+        {{ form_label(form.teamLead) }}
+        {{ form_widget(form.teamLead) }}
+        {{ form_errors(form.teamLead) }}
+    </div>
+
+    {# Logo #}
+    <div class="tc-field">
+        {{ form_label(form.logo) }}
+        {% if team is defined and team.logoPath %}
+            <div class="mb-2">
+                <img src="{{ asset(team.logoPath) }}"
+                     alt="Logo"
+                     style="height: 60px; border-radius: var(--tc-radius)">
+            </div>
+        {% endif %}
+        {{ form_widget(form.logo) }}
+        {{ form_errors(form.logo) }}
+    </div>
+
+    {# Fahrer / Attendances #}
+    <div class="tc-field">
+        <label class="tc-label">Fahrer</label>
+        <div class="tc-card mb-2">
+            <table class="tc-table" id="attendances-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th style="width: 48px"></th>
+                    </tr>
+                </thead>
+                <tbody id="attendances-body">
+                    {% for attendanceForm in form.attendances %}
+                        <tr>
+                            <td>{{ form_widget(attendanceForm.driver) }}</td>
+                            <td class="text-end">{{ form_widget(attendanceForm.delete) }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <button type="button" class="btn-tc-outline" id="add-driver">
+            <i class="bi bi-plus me-1"></i>Fahrer hinzufügen
+        </button>
+    </div>
+
+    {# Batch-Import #}
+    <div class="tc-field">
+        {{ form_label(form.batchCreateDrivers) }}
+        {{ form_widget(form.batchCreateDrivers) }}
+        {{ form_help(form.batchCreateDrivers) }}
+    </div>
+
+    <div class="d-flex gap-2 mt-3">
+        <button type="submit" class="btn-tc-primary">Speichern</button>
+        <a href="{{ path('team_index', {raceId: race.id}) }}" class="btn-tc-outline">Abbrechen</a>
+    </div>
+
+{{ form_end(form) }}

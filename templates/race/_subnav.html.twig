@@ -1,0 +1,27 @@
+{#
+    _subnav.html.twig
+    Unternavigation für alle Renn-Seiten.
+    Erwartet: race (Race)
+#}
+<div class="tc-subnav mb-4">
+    <a href="{{ path('race_overview',  {id: race.id}) }}"
+       class="tc-subnav-link {% if app.request.attributes.get('_route') == 'race_overview' %}active{% endif %}">
+        <i class="bi bi-speedometer2 me-1"></i>Aktueller Stand
+    </a>
+    <a href="{{ path('team_index',     {raceId: race.id}) }}"
+       class="tc-subnav-link {% if app.request.attributes.get('_route') starts with 'team' %}active{% endif %}">
+        <i class="bi bi-people me-1"></i>Teams
+    </a>
+    <a href="{{ path('event_index',    {raceId: race.id}) }}"
+       class="tc-subnav-link {% if app.request.attributes.get('_route') starts with 'event' %}active{% endif %}">
+        <i class="bi bi-lightning me-1"></i>Events
+    </a>
+    <a href="{{ path('penalty_index',  {raceId: race.id}) }}"
+       class="tc-subnav-link {% if app.request.attributes.get('_route') starts with 'penalty' %}active{% endif %}">
+        <i class="bi bi-exclamation-triangle me-1"></i>Strafen
+    </a>
+    <a href="{{ path('race_settings',  {id: race.id}) }}"
+       class="tc-subnav-link {% if app.request.attributes.get('_route') == 'race_settings' %}active{% endif %}">
+        <i class="bi bi-wrench me-1"></i>Einstellungen
+    </a>
+</div>

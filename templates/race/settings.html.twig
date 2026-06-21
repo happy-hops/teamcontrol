@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ race.name }} — Einstellungen{% endblock %}
+
+{% block body %}
+
+    <div class="tc-page-header">
+        <h1>{{ race.name }}</h1>
+        <div class="d-flex gap-2">
+            <a href="{{ path('race_edit', {id: race.id}) }}" class="btn-tc-primary">
+                <i class="bi bi-pencil me-1"></i>Bearbeiten
+            </a>
+        </div>
+    </div>
+
+    {% include 'race/_subnav.html.twig' with {race: race} %}
+
+    <div class="row g-4">
+
+        {# Stammdaten #}
+        <div class="col-md-6">
+            <div class="tc-card">
+                <div class="tc-card-header">Stammdaten</div>
+                <table class="tc-table tc-info-table">
+                    <tbody>
+                        <tr><td>Name</td>        <td>{{ race.name }}</td></tr>
+                        <tr>
+                            <td>Teams</td>
+                            <td>
+                                <a href="{{ path('team_index', {raceId: race.id}) }}">
+                                    {{ race.teams|length }} Teams
+                                </a>
+                            </td>
+                        </tr>
+                        <tr><td>Status</td>       <td>
+                            <span class="tc-badge tc-badge-{{ race.state.value == 0 ? 'planned' : (race.state.value == 5 ? 'active' : 'finished') }}">
+                                {{ race.state.label() }}
+                            </span>
+                        </td></tr>
+                        <tr><td>Datum</td>        <td>{{ race.scheduled ? race.scheduled|date('d.m.Y') : '—' }}</td></tr>
+                        <tr><td>Gestartet</td>    <td>{{ race.startedAt  ? race.startedAt|date('d.m.Y H:i')  : '—' }}</td></tr>
+                        <tr><td>Beendet</td>      <td>{{ race.finishedAt ? race.finishedAt|date('d.m.Y H:i') : '—' }}</td></tr>
+                        <tr><td>Erstellt</td>     <td>{{ race.createdAt|date('d.m.Y') }}</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        {# Renneinstellungen #}
+        <div class="col-md-6">
+            <div class="tc-card">
+                <div class="tc-card-header">Einstellungen</div>
+                <table class="tc-table tc-info-table">
+                    <tbody>
+                        <tr><td>Modus</td>           <td>{{ race.mode.label() }}</td></tr>
+                        <tr>
+                            <td>Vorbuchung</td>
+                            <td>
+                                {% if race.prebookingOpen %}
+                                    <span class="tc-badge tc-badge-active">Offen</span>
+                                {% else %}
+                                    <span class="tc-badge tc-badge-planned">Geschlossen</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr><td>Renndauer</td>       <td>{{ race.duration|tc_minutes }}</td></tr>
+                        <tr><td>Max. Fahrzeit</td>   <td>{{ race.maxDrive|tc_minutes }}</td></tr>
+                        <tr><td>Min. Runde</td>      <td>{{ race.minTurn|tc_minutes }}</td></tr>
+                        <tr>
+                            <td>Max. Runde</td>
+                            <td>{{ race.maxTurn|tc_minutes }} + {{ race.waitingPeriod|tc_minutes }} Karenz</td>
+                        </tr>
+                        <tr><td>Pause</td>           <td>{{ race.breakTime|tc_minutes }}</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    {# State-Machine-Aktionen #}
+    <div class="d-flex gap-2 mt-4">
+        {% if race.state.isPlanned() %}
+            <form method="post" action="{{ path('race_start', {id: race.id}) }}"
+                  onsubmit="return confirm('Rennen jetzt starten?')">
+                <button type="submit" class="btn-tc-primary">
+                    <i class="bi bi-play-fill me-1"></i>Rennen starten
+                </button>
+            </form>
+        {% endif %}
+
+        {% if race.state.isActive() %}
+            <form method="post" action="{{ path('race_finish', {id: race.id}) }}"
+                  onsubmit="return confirm('Rennen wirklich beenden?')">
+                <button type="submit" class="btn-tc-primary"
+                        style="background: var(--tc-danger); color: #fff">
+                    <i class="bi bi-stop-fill me-1"></i>Rennen beenden
+                </button>
+            </form>
+        {% endif %}
+
+        <a href="{{ path('race_index') }}" class="btn-tc-outline">
+            <i class="bi bi-arrow-left me-1"></i>Zurück
+        </a>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% if currentRace is defined and currentRace and currentRace.state.isActive() %}
+    <div class="tc-race-bar"
+         id="tc-race-bar"
+         data-started="{{ currentRace.startedAt|date('U') }}"
+         data-duration="{{ currentRace.duration * 60 }}">
+
+        <div class="tc-race-bar-inner">
+
+            <a href="{{ path('race_show', {id: currentRace.id}) }}" class="tc-race-bar-name">
+                <span class="tc-race-bar-dot"></span>
+                <span>{{ currentRace.name }}</span>
+            </a>
+
+            <div class="tc-race-bar-times">
+                <div class="tc-race-bar-block">
+                    <span class="tc-race-bar-lbl">Rennzeit</span>
+                    <span class="tc-race-bar-val" id="tc-elapsed">00:00:00</span>
+                </div>
+                <div class="tc-race-bar-block tc-race-bar-block--remaining">
+                    <span class="tc-race-bar-lbl">Verbleibend</span>
+                    <span class="tc-race-bar-val tc-race-bar-val--remaining" id="tc-remaining">00:00:00</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="tc-race-bar-track">
+            <div class="tc-race-bar-fill" id="tc-progress"></div>
+        </div>
+
+    </div>
+
+{% endif %}

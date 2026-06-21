@@ -1,0 +1,54 @@
+{#
+    _form.html.twig
+    Erwartet: form (RaceFormType), action (string)
+#}
+{{ form_start(form, {action: action}) }}
+
+    <div class="row g-3 mb-3">
+        <div class="col-sm-9">
+            {{ form_row(form.name) }}
+        </div>
+        <div class="col-sm-3">
+            {{ form_row(form.mode) }}
+        </div>
+    </div>
+
+    <div class="row g-3 mb-3">
+        <div class="col-sm-9">
+            {{ form_row(form.scheduled) }}
+        </div>
+        <div class="col-sm-3">
+            {{ form_row(form.prebookingOpen) }}
+        </div>
+    </div>
+
+    <div class="row g-3 mb-3">
+        <div class="col-sm-4">
+            {{ form_row(form.duration) }}
+        </div>
+        <div class="col-sm-4">
+            {{ form_row(form.minTurn) }}
+        </div>
+        <div class="col-sm-4">
+            {{ form_row(form.maxTurn) }}
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-sm-4">
+            {{ form_row(form.maxDrive) }}
+        </div>
+        <div class="col-sm-4">
+            {{ form_row(form.breakTime) }}
+        </div>
+        <div class="col-sm-4">
+            {{ form_row(form.waitingPeriod) }}
+        </div>
+    </div>
+
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn-tc-primary">Speichern</button>
+        <a href="{{ path('race_index') }}" class="btn-tc-outline">Abbrechen</a>
+    </div>
+
+{{ form_end(form) }}

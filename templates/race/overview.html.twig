@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ race.name }} — Aktueller Stand{% endblock %}
+
+{% block body %}
+
+    <div class="tc-page-header">
+        <h1>{{ race.name }}</h1>
+        <div class="d-flex gap-2">
+            <a href="{{ path('race_public_overview', {id: race.id}) }}"
+               target="_blank" class="btn-tc-outline">
+                <i class="bi bi-display me-1"></i>Externe Ansicht
+            </a>
+        </div>
+    </div>
+
+    {% include 'race/_subnav.html.twig' with {race: race} %}
+
+    {# Suchfeld #}
+    <div class="mb-4" style="max-width: 300px">
+        <input class="tc-input"
+               type="search"
+               id="team-search"
+               placeholder="Team filtern…"
+               autocomplete="off">
+    </div>
+
+    {# Team-Kacheln #}
+    <div class="row g-3" id="teams-grid">
+        {% for team in race.teams %}
+            <div class="col-12 col-sm-6 col-lg-4 col-xl-3 tc-team-tile"
+                 data-name="{{ team.name|lower }}">
+                <div class="tc-card h-100">
+                    <div class="tc-card-header d-flex align-items-center justify-content-between">
+                        <span>
+                            {% if team.position %}
+                                <span style="color: var(--tc-muted)">#{{ team.position }}</span>
+                            {% endif %}
+                            {{ team.name }}
+                        </span>
+                        <a href="{{ path('team_show', {raceId: race.id, id: team.id}) }}"
+                           style="color: var(--tc-muted); font-size: .8rem">
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                    <table class="tc-table tc-info-table">
+                        <tbody>
+                            <tr>
+                                <td><i class="bi bi-clock me-1"></i>Fahrzeit</td>
+                                <td id="team-drive-{{ team.id }}">—</td>
+                            </tr>
+                            <tr>
+                                <td><i class="bi bi-person me-1"></i>Fahrer</td>
+                                <td id="team-driver-{{ team.id }}" style="color: var(--tc-muted)">—</td>
+                            </tr>
+                            <tr>
+                                <td><i class="bi bi-exclamation-triangle me-1"></i>Strafen</td>
+                                <td>{{ team.penalties|length }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-12">
+                <div class="tc-card p-4 text-center" style="color: var(--tc-muted)">
+                    Noch keine Teams angemeldet.
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+    // Team-Suchfeld
+    document.getElementById('team-search')?.addEventListener('input', function () {
+        const q = this.value.toLowerCase();
+        document.querySelectorAll('.tc-team-tile').forEach(el => {
+            el.style.display = el.dataset.name.includes(q) ? '' : 'none';
+        });
+    });
+</script>
+{% endblock %}

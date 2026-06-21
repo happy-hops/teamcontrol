@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Teams — {{ race.name }}{% endblock %}
+
+{% block body %}
+
+    <div class="tc-page-header">
+        <h1>Teams <span>{{ race.name }}</span></h1>
+        <div class="d-flex gap-2">
+            <a href="{{ path('team_new', {raceId: race.id}) }}" class="btn-tc-primary">
+                <i class="bi bi-plus-lg me-1"></i>Neues Team
+            </a>
+        </div>
+    </div>
+
+    <div class="tc-card">
+        <table class="tc-table">
+            <thead>
+                <tr>
+                    <th style="width: 40px">#</th>
+                    <th>Name</th>
+                    <th>Teamleiter</th>
+                    <th class="text-center">Fahrer</th>
+                    <th>Token</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for team in teams %}
+                    <tr>
+                        <td style="color: var(--tc-muted)">{{ team.position ?? '—' }}</td>
+                        <td>
+                            <a href="{{ path('team_show', {raceId: race.id, id: team.id}) }}"
+                               style="color: var(--tc-text)">
+                                {% if team.logoPath %}
+                                    <img src="{{ asset(team.logoPath) }}"
+                                         alt=""
+                                         style="height: 20px; width: 20px; object-fit: cover; border-radius: 3px; margin-right: 6px; vertical-align: middle">
+                                {% endif %}
+                                {{ team.name }}
+                            </a>
+                            {% if team.hasUnassignedAttendances() %}
+                                <span class="tc-badge ms-2"
+                                      style="background: rgba(255,59,59,.1); color: var(--tc-danger); border: 1px solid var(--tc-danger)"
+                                      title="Tag-Zuordnungen fehlen">
+                                    Tag!
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td style="color: var(--tc-muted)">{{ team.teamLead }}</td>
+                        <td class="text-center">{{ team.attendances|length }}</td>
+                        <td>
+                            <code style="font-family: monospace; letter-spacing: .08em; font-size: .85rem">
+                                {{ team.teamToken }}
+                            </code>
+                        </td>
+                        <td class="text-end">
+                            <div class="d-flex gap-2 justify-content-end">
+                                {# Reihenfolge #}
+                                <form method="post" action="{{ path('team_move_up', {raceId: race.id, id: team.id}) }}">
+                                    <button type="submit" class="btn-tc-outline" style="padding: .2rem .5rem" title="Nach oben">
+                                        <i class="bi bi-chevron-up"></i>
+                                    </button>
+                                </form>
+                                <form method="post" action="{{ path('team_move_down', {raceId: race.id, id: team.id}) }}">
+                                    <button type="submit" class="btn-tc-outline" style="padding: .2rem .5rem" title="Nach unten">
+                                        <i class="bi bi-chevron-down"></i>
+                                    </button>
+                                </form>
+                                <a href="{{ path('team_edit', {raceId: race.id, id: team.id}) }}"
+                                   class="btn-tc-outline" style="padding: .2rem .5rem">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <form method="post"
+                                      action="{{ path('team_delete', {raceId: race.id, id: team.id}) }}"
+                                      onsubmit="return confirm('Team löschen?')">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit" class="btn-tc-outline"
+                                            style="padding: .2rem .5rem; border-color: var(--tc-danger); color: var(--tc-danger)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center" style="padding: 2rem; color: var(--tc-muted)">
+                            Zu diesem Rennen gibt es noch keine Teams.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

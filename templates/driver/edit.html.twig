@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ driver.name }} bearbeiten{% endblock %}
+
+{% block body %}
+
+    <div class="tc-page-header">
+        <h1>Fahrer <span>bearbeiten</span></h1>
+        <a href="{{ path('driver_index') }}" class="btn-tc-outline">
+            <i class="bi bi-arrow-left me-1"></i>Zurück
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-5 col-lg-4">
+            {{ form_start(form, {action: path('driver_update', {id: driver.id})}) }}
+            {{ form_row(form.name) }}
+            <div class="d-flex gap-2 mt-3">
+                <button type="submit" class="btn-tc-primary">Speichern</button>
+                <a href="{{ path('driver_index') }}" class="btn-tc-outline">Abbrechen</a>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}

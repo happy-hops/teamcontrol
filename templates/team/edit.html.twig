@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ team.name }} bearbeiten — {{ race.name }}{% endblock %}
+
+{% block body %}
+
+    <div class="tc-page-header">
+        <h1>Team <span>bearbeiten</span></h1>
+        <a href="{{ path('team_show', {raceId: race.id, id: team.id}) }}" class="btn-tc-outline">
+            <i class="bi bi-arrow-left me-1"></i>Zurück
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-7 col-lg-6">
+            {% include 'team/_form.html.twig' with {
+                action: path('team_update', {raceId: race.id, id: team.id})
+            } %}
+        </div>
+    </div>
+
+{% endblock %}

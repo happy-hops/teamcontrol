@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rennen — Teamcontrol{% endblock %}
+
+{% block body %}
+
+    <div class="tc-page-header">
+        <h1>Rennen <span>Übersicht</span></h1>
+{#        <a href="{{ path('race_new') }}" class="btn-tc-primary">#}
+            <i class="bi bi-plus-lg me-1"></i>Neues Rennen
+        </a>
+    </div>
+
+    <div class="tc-card">
+        <table class="tc-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Datum</th>
+                    <th>Modus</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for race in races %}
+                    <tr>
+                        <td>
+                            <strong>{{ race.name }}</strong>
+                        </td>
+                        <td style="color: var(--tc-muted)">
+                            {{ race.scheduled ? race.scheduled|date('d.m.Y') : '—' }}
+                        </td>
+                        <td style="color: var(--tc-muted)">
+                            {{ race.mode.label() }}
+                        </td>
+                        <td>
+                            <span class="tc-badge tc-badge-{{ race.state.value == 0 ? 'planned' : (race.state.value == 5 ? 'active' : 'finished') }}">
+                                {{ race.state.label() }}
+                            </span>
+                        </td>
+                        <td style="text-align: right">
+                            <a href="{{ path('race_show', { id: race.id }) }}" class="btn-tc-outline" style="padding: .25rem .65rem; font-size: .8rem;">
+                                Details
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" style="text-align: center; color: var(--tc-muted); padding: 2rem;">
+                            Noch keine Rennen angelegt.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,160 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ team.name }} — {{ race.name }}{% endblock %}
+
+{% block body %}
+
+
+    {# ── Page Header ──────────────────────────────────────────── #}
+    <div class="tc-page-header">
+        <h1>
+            {% if team.position %}<span style="color: var(--tc-muted); font-size: 1.4rem">#{{ team.position }}</span> {% endif %}
+            Team: {{ team.name }}
+        </h1>
+        {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+            <a href="?_switch_user=_exit" class="btn-tc-outline">
+                <i class="bi bi-arrow-left me-1"></i>Zurück zum Admin
+            </a>
+        {% endif %}
+    </div>
+
+    {# ── Fahrer-Tabelle ───────────────────────────────────────── #}
+    <div class="tc-card mb-5">
+        <table class="tc-table">
+            <thead>
+            <tr>
+                <th>Fahrer</th>
+                <th class="text-end">Aktuelle Fahrzeit</th>
+                <th class="text-end">Letzte Fahrzeit</th>
+                <th class="text-end">Fahrpause</th>
+                <th class="text-end">Gesamtzeit</th>
+                <th class="text-end">Strafen</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for attendance in team.attendances %}
+                {% set ds = driverStats[attendance.driver.id] ?? null %}
+                <tr{% if ds and ds.isDriving %} style="background: rgba(232,255,0,.05)"{% endif %}>
+
+                    <td>
+                        <strong>{{ attendance.driver.name }}</strong>
+                        {% if ds and ds.isDriving %}
+                            <span class="tc-badge tc-badge-active ms-2">fährt</span>
+                        {% endif %}
+                    </td>
+
+                    <td class="text-end">
+                        {% if race.state.isActive() and ds and ds.isDriving and ds.currentDriveSeconds is not null %}
+                            {% include 'team/_timer.html.twig' with {
+                                mode:    'timer',
+                                start:   ('now'|date('U') - ds.currentDriveSeconds) * 1000,
+                                warning: race.maxTurn * 60 * 1000,
+                                error:   (race.maxTurn + race.waitingPeriod) * 60 * 1000,
+                                initial: ds.currentDriveSeconds|tc_seconds
+                            } %}
+                        {% else %}
+                            <span style="color: var(--tc-muted)">—</span>
+                        {% endif %}
+                    </td>
+
+                    <td class="text-end">
+                        {% if ds and not ds.isDriving and ds.lastDriveSeconds is not null %}
+                            {{ ds.lastDriveSeconds|tc_seconds }}
+                        {% else %}
+                            <span style="color: var(--tc-muted)">—</span>
+                        {% endif %}
+                    </td>
+
+                    <td class="text-end">
+                        {% if race.state.isActive() and ds and not ds.isDriving and ds.lastBreakSeconds is not null %}
+                            {% include 'team/_timer.html.twig' with {
+                                mode:     'countdown',
+                                start:    ('now'|date('U') - ds.lastBreakSeconds) * 1000,
+                                duration: race.breakTime * 60 * 1000,
+                                initial:  ds.lastBreakSeconds|tc_seconds
+                            } %}
+                        {% else %}
+                            <span style="color: var(--tc-muted)">—</span>
+                        {% endif %}
+                    </td>
+
+                    <td class="text-end">{{ ds ? ds.totalDriveSeconds|tc_seconds : '—' }}</td>
+
+                    <td class="text-end">
+                        {% if ds and ds.penaltyCount > 0 %}
+                            <span style="color: var(--tc-danger)">{{ ds.penaltyCount }}</span>
+                        {% else %}
+                            {{ ds ? ds.penaltyCount : '0' }}
+                        {% endif %}
+                    </td>
+
+                </tr>
+            {% endfor %}
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="4" class="tc-tfoot-label">Gesamt</td>
+                <td class="text-end"><strong>{{ stats.totalDriveSeconds()|tc_seconds }}</strong></td>
+                <td></td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    {# ── Info-Panels ──────────────────────────────────────────── #}
+    <div class="tc-card mb-4">
+        <div class="tc-card-header">Über das Rennen</div>
+        <table class="tc-table tc-info-table">
+            <tbody>
+            <tr><td>Status</td>        <td>{{ race.state.label() }}</td></tr>
+            <tr><td>Renndauer</td>      <td>{{ race.duration|tc_minutes }}</td></tr>
+            <tr><td>Max. Fahrzeit</td>  <td>{{ race.maxDrive|tc_minutes }}</td></tr>
+            <tr><td>Min. Runde</td>     <td>{{ race.minTurn|tc_minutes }}</td></tr>
+            <tr>
+                <td>Max. Runde</td>
+                <td>{{ race.maxTurn|tc_minutes }} + {{ race.waitingPeriod|tc_minutes }} Karenz</td>
+            </tr>
+            <tr><td>Pause</td>          <td>{{ race.breakTime|tc_minutes }}</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="tc-card mb-4">
+        <div class="tc-card-header">Über das Team</div>
+        <table class="tc-table tc-info-table">
+            <tbody>
+            <tr><td>Startnummer</td> <td>{{ team.position ?? '—' }}</td></tr>
+            <tr><td>Name</td>        <td>{{ team.name }}</td></tr>
+            <tr><td>Teamleiter</td>  <td>{{ team.teamLead }}</td></tr>
+            <tr>
+                <td>Token</td>
+                <td><code style="font-family: monospace; letter-spacing: .1em">{{ team.teamToken }}</code></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="tc-card">
+        <div class="tc-card-header">Fahrer &amp; Tag-Zuordnung</div>
+        <table class="tc-table tc-info-table">
+            <tbody>
+            {% for attendance in team.attendances %}
+                <tr>
+                    <td>
+                        <i class="bi bi-person me-1" style="color: var(--tc-muted)"></i>
+                        {{ attendance.driver.name }}
+                    </td>
+                    <td class="text-end">
+                        {% if attendance.isUnassigned() %}
+                            <span class="tc-badge" style="background: rgba(255,59,59,.1); color: var(--tc-danger); border: 1px solid var(--tc-danger)">Tag fehlt</span>
+                        {% else %}
+                            <span class="tc-badge tc-badge-finished">OK</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

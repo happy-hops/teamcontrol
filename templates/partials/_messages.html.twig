@@ -1,0 +1,14 @@
+{% set typeMap = { 'notice': 'success', 'success': 'success', 'warning': 'warning', 'error': 'danger', 'danger': 'danger', 'info': 'info' } %}
+{% set iconMap = { 'success': 'bi-check-circle-fill', 'notice': 'bi-check-circle-fill', 'warning': 'bi-exclamation-triangle-fill', 'error': 'bi-x-circle-fill', 'danger': 'bi-x-circle-fill', 'info': 'bi-info-circle-fill' } %}
+
+{% for type, messages in app.flashes %}
+    {% set bsType = typeMap[type] ?? 'info' %}
+    {% set icon   = iconMap[type] ?? 'bi-info-circle-fill' %}
+    {% for message in messages %}
+        <div class="tc-alert {{ bsType }} mb-3" role="alert">
+            <i class="bi {{ icon }} flex-shrink-0 mt-1"></i>
+            <span class="tc-alert-body">{{ message }}</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
+        </div>
+    {% endfor %}
+{% endfor %}

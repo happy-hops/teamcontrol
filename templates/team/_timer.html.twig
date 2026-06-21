@@ -1,0 +1,19 @@
+{#
+_timer.html.twig
+Parameter:
+  mode:     'timer' | 'countdown'
+  start:    Unix-Timestamp in Millisekunden
+  duration: Dauer in Millisekunden (nur countdown)
+  warning:  Schwellwert in ms → CSS-Klasse 'tc-timer-warning'
+  error:    Schwellwert in ms → CSS-Klasse 'tc-timer-error'
+  initial:  Anzeigewert vor JS-Init
+#}
+<span class="tc-timer"
+      data-controller="timer"
+      data-timer-mode-value="{{ mode }}"
+      data-timer-start-value="{{ start }}"
+      {% if duration is defined %}data-timer-duration-value="{{ duration }}"{% endif %}
+    {% if warning  is defined %}data-timer-warning-value="{{ warning }}"{% endif %}
+    {% if error    is defined %}data-timer-error-value="{{ error }}"{% endif %}>
+    {{ initial ?? '—' }}
+</span>

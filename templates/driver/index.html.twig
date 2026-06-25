@@ -6,30 +6,35 @@
 
     <div class="tc-page-header">
         <h1>Fahrer <span>Übersicht</span></h1>
-        <a href="{{ path('driver_new') }}" class="btn-tc-primary">
-            <i class="bi bi-plus-lg me-1"></i>Neuer Fahrer
-        </a>
+        {{ include('components/Link.html.twig', {
+            to: 'driver_new',
+            name: 'Neuer Fahrer',
+            icon_before: 'bi-plus',
+            as_button: true,
+        }) }}
     </div>
 
     <div class="row g-4">
 
         <div class="col-md-9">
-            <div class="tc-card">
-                <table class="tc-table">
+            {% embed 'components/Card.html.twig' %}
+                    {% block card_body %}
+                    <div class="card-body p-2">
+                    <table class="table">
                     <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th style="width: 80px"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for driver in drivers %}
                         <tr>
+                        <th class="text-uppercase">Name</th>
+                        <th></th>
+                        </tr>
+                    </thead>
+                        <tbody>
+
+                    {% for driver in drivers %}
+                                            <tr class="">
                             <td>{{ driver.name }}</td>
-                            <td class="text-end">
-                                <div class="d-flex gap-2 justify-content-end">
+                            <td class="d-flex justify-content-end gap-2">
                                     <a href="{{ path('driver_edit', {id: driver.id}) }}"
-                                       class="btn-tc-outline" style="padding: .2rem .6rem; font-size: .8rem">
+                                       class="btn btn-sm btn-outline-secondary">
                                         <i class="bi bi-pencil"></i>
                                     </a>
                                     <form method="post"
@@ -37,12 +42,11 @@
                                           onsubmit="return confirm('Fahrer wirklich löschen?')">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <button type="submit"
-                                                class="btn-tc-outline"
-                                                style="padding: .2rem .6rem; font-size: .8rem; border-color: var(--tc-danger); color: var(--tc-danger)">
+                                                class="btn btn-sm btn-outline-danger"
+                                               >
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </form>
-                                </div>
                             </td>
                         </tr>
                     {% else %}
@@ -54,31 +58,14 @@
                         </tr>
                     {% endfor %}
                     </tbody>
-                </table>
-            </div>
+                    </table>
+                    </div>
+                    {% endblock %}
+            {% endembed %}
         </div>
 
         <div class="col-md-3">
-            <div class="tc-card">
-                <div class="tc-card-header">Suche</div>
-                <div class="p-3">
-                    <form method="get" action="{{ path('driver_index') }}">
-                        <div class="tc-field">
-                            <label class="tc-label" for="q">Name</label>
-                            <input class="tc-input"
-                                   type="search"
-                                   id="q"
-                                   name="q"
-                                   value="{{ search }}"
-                                   placeholder="Max Mustermann">
-                        </div>
-                        <div class="d-flex gap-2">
-                            <button type="submit" class="btn-tc-primary" style="flex: 1">Suchen</button>
-                            <a href="{{ path('driver_index') }}" class="btn-tc-outline">✕</a>
-                        </div>
-                    </form>
-                </div>
-            </div>
+           {{ include('components/Search.html.twig', {card_title: 'Suche'}) }}
         </div>
 
     </div>

@@ -1,18 +1,10 @@
 {% if is_granted('ROLE_USER') %}
 
+{% set nav = topNav('USER') %}
+
     {# ── Admin-Navbar ─────────────────────────────────────────── #}
-    <nav class="tc-navbar navbar navbar-expand-lg fixed-top">
+    <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
-
-            <a class="navbar-brand" href="{{ path('race_current') }}">
-                <span class="brand-dot"></span>
-                {% if currentRace is defined and currentRace %}
-                    {{ currentRace.name }}
-                {% else %}
-                    Teamcontrol
-                {% endif %}
-            </a>
-
             <button class="navbar-toggler border-0 text-muted"
                     type="button"
                     data-bs-toggle="collapse"
@@ -23,14 +15,28 @@
                 <i class="bi bi-list fs-4"></i>
             </button>
 
-            <div class="collapse navbar-collapse" id="mainNav">
-                <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
+            <div class="collapse navbar-collapse justify-content-between" id="mainNav">
+                <ul class="navbar-nav align-items-lg-center gap-1">
+                    {% for link in nav.left %}
+                        <li class="nav-item">
+                            {{ include('components/Link.html.twig', {
+                                to: link.to,
+                                name: link.name,
+                                icon_before: link.icon_before,
+                                active: app.request.attributes.get('_route') == path('driver_index'),
 
+                            }) }}
+                        </li>
+                    {% endfor %}
+                    <!--
                     <li class="nav-item">
-                        <a class="nav-link {% if app.request.attributes.get('_route') starts with 'driver' %}active{% endif %}"
-                           href="{{ path('driver_index') }}">
-                            <i class="bi bi-person me-1"></i>Fahrer
-                        </a>
+                        {{ include('components/Link.html.twig', {
+                            to: 'driver_index',
+                            name: 'Fahrer',
+                            icon_before: 'Fahrer',
+                            active: app.request.attributes.get('_route') == path('driver_index'),
+                            })
+                        }}
                     </li>
 
                     <li class="nav-item">
@@ -66,9 +72,7 @@
                                 <i class="bi bi-exclamation-triangle me-1"></i>Strafen
                             </a>
                         </li>
-                    {% endif %}
-
-                    <li class="nav-item d-none d-lg-block" aria-hidden="true">
+                    {% endif %}"nav-item d-none d-lg-block" aria-hidden="true">
                         <span style="color: var(--tc-border)">|</span>
                     </li>
 
@@ -104,7 +108,20 @@
                             <i class="bi bi-box-arrow-right me-1"></i>Abmelden
                         </a>
                     </li>
+-->
+                </ul>
+                <ul class="navbar-nav align-items-lg-center gap-1">
+                   {% for link in nav.right %}
+                        <li class="nav-item">
+                            {{ include('components/Link.html.twig', {
+                                to: link.to,
+                                name: link.name,
+                                icon_before: link.icon_before,
+                                active: app.request.attributes.get('_route') == path('driver_index'),
 
+                            }) }}
+                        </li>
+                   {% endfor %}
                 </ul>
             </div>
 

@@ -1,0 +1,19 @@
+{% extends 'components/Card.html.twig' %}
+
+{% block card_body %}
+  <form method="get" action="{{ path('driver_index') }}">
+    <div class="tc-field">
+      <label class="tc-label" for="q">Name</label>
+      <input class="tc-input"
+         type="search"
+         id="q"
+         name="q"
+         value="{{ search }}"
+         placeholder="Max Mustermann">
+    </div>
+    <div class="d-flex gap-2">
+       <button type="submit" class="btn-tc-primary" style="flex: 1">Suchen</button>
+       <a href="{{ path('driver_index') }}" class="btn-tc-outline">✕</a>
+    </div>
+   </form>
+{% endblock %}

@@ -1,4 +1,8 @@
-./config/reference.php
+/config/reference.php
+.php-cs-fixer.cache
+.php-cs-fixer.dist.php
+.phpactor.json
+.twig-cs-fixer.cache
 
 ###> symfony/framework-bundle ###
 /.env.local

@@ -1,0 +1,16 @@
+{% set active = false %}
+
+{% if as_button is not defined %}
+    {% set as_button = false %}
+{% endif %}
+{% if app.request.attributes.get('_route') === to %}
+  {% set active = true %}
+{% endif %}
+
+<a href="{{ path(to) }}" class="{% if as_button === false %}nav-link{% else %}btn btn-tc-primary{% endif %}{% if active %} active{% endif %}">
+  {% if icon_before is defined %}
+    <i class="bi {{ icon_before }} me-1"></i>
+  {% endif %}
+
+  {{ name }}
+</a>

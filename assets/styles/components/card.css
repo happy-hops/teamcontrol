@@ -1,0 +1,50 @@
+.tc-card {
+    background: var(--tc-surface);
+    border: 1px solid var(--tc-border);
+    border-radius: var(--tc-radius);
+}
+
+.tc-card-header {
+    font-family: var(--tc-font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--tc-text);
+    padding: .85rem 1rem;
+    border-bottom: 1px solid var(--tc-border);
+    background: var(--tc-surface-2);
+    border-radius: var(--tc-radius) var(--tc-radius) 0 0;
+}
+
+/* Info-Tabellen in den Panels: Label links (muted), Wert rechts */
+.tc-info-table td:first-child {
+    color: var(--tc-muted);
+    width: 45%;
+}
+
+.tc-info-table td:last-child {
+    text-align: right;
+    color: var(--tc-text);
+}
+
+.tc-card.mb-5,
+.tc-card + .tc-card,
+.tc-card + .row {
+    margin-top: 2.5rem;
+}
+
+.tc-card { margin-bottom: 0; }
+.tc-tfoot-label {
+    font-family: var(--tc-font-display);
+    font-size: .8rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--tc-muted);
+}
+
+.tc-table tfoot tr td {
+    border-bottom: none;
+    border-top: 2px solid var(--tc-border);
+}

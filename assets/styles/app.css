@@ -8,6 +8,9 @@
 @import url('../vendor/@fontsource/dm-sans/600.css');
 @import url('../vendor/bootstrap-icons/font/bootstrap-icons.css');
 
+@import url('./components/link.css');
+@import url('./components/card.css');
+
 
 /* ─────────────────────────────────────────────────────────────
    Design Tokens
@@ -17,8 +20,9 @@
     --tc-surface:      #15171c;
     --tc-surface-2:    #1d2028;
     --tc-border:       #2a2d36;
-    --tc-accent:       #e8ff00;
-    --tc-accent-dim:   #b8cc00;
+    --tc-accent:       #ff2400;
+    --tc-accent-dim:   #b80f0a;
+    --tc-accent-dim-rgba: rgba(150, 0, 24, .3);
     --tc-text:         #e8eaf0;
     --tc-muted:        #6b7280;
     --tc-danger:       #ff3b3b;
@@ -240,10 +244,6 @@ body.has-race-bar.no-navbar { padding-top: 88px; }
    Navbar
    ───────────────────────────────────────────────────────────── */
 .tc-navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
     height: var(--tc-navbar-h);
     background: var(--tc-surface);
     border-bottom: 2px solid var(--tc-accent);
@@ -271,22 +271,6 @@ body.has-race-bar.no-navbar { padding-top: 88px; }
     box-shadow: 0 0 8px var(--tc-accent);
     animation: pulse 2s infinite;
 }
-
-.tc-navbar .nav-link {
-    font-family: var(--tc-font-display);
-    font-size: 1rem;
-    font-weight: 600;
-    letter-spacing: .06em;
-    text-transform: uppercase;
-    color: var(--tc-muted) !important;
-    padding: .25rem .75rem !important;
-    border-radius: var(--tc-radius);
-    transition: color .15s, background .15s;
-}
-
-.tc-navbar .nav-link:hover,
-.tc-navbar .nav-link.active { color: var(--tc-text) !important; background: var(--tc-surface-2); }
-.tc-navbar .nav-link.active { color: var(--tc-accent) !important; }
 
 .tc-navbar .dropdown-menu {
     background: var(--tc-surface-2);
@@ -396,61 +380,6 @@ body.has-race-bar .tc-main::before { display: none; }
 
 
 /* ─────────────────────────────────────────────────────────────
-   Cards
-   ───────────────────────────────────────────────────────────── */
-.tc-card {
-    background: var(--tc-surface);
-    border: 1px solid var(--tc-border);
-    border-radius: var(--tc-radius);
-}
-
-.tc-card-header {
-    font-family: var(--tc-font-display);
-    font-size: 1rem;
-    font-weight: 700;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--tc-text);
-    padding: .85rem 1rem;
-    border-bottom: 1px solid var(--tc-border);
-    background: var(--tc-surface-2);
-    border-radius: var(--tc-radius) var(--tc-radius) 0 0;
-}
-
-/* Info-Tabellen in den Panels: Label links (muted), Wert rechts */
-.tc-info-table td:first-child {
-    color: var(--tc-muted);
-    width: 45%;
-}
-
-.tc-info-table td:last-child {
-    text-align: right;
-    color: var(--tc-text);
-}
-
-.tc-card.mb-5,
-.tc-card + .tc-card,
-.tc-card + .row {
-    margin-top: 2.5rem;
-}
-
-.tc-card { margin-bottom: 0; }
-.tc-tfoot-label {
-    font-family: var(--tc-font-display);
-    font-size: .8rem;
-    font-weight: 700;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--tc-muted);
-}
-
-.tc-table tfoot tr td {
-    border-bottom: none;
-    border-top: 2px solid var(--tc-border);
-}
-
-
-/* ─────────────────────────────────────────────────────────────
    Tables
    ───────────────────────────────────────────────────────────── */
 .tc-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
@@ -518,7 +447,7 @@ body.has-race-bar .tc-main::before { display: none; }
 .btn-tc-primary:hover {
     background: var(--tc-accent-dim);
     color: #000;
-    box-shadow: 0 0 12px rgba(232, 255, 0, .3);
+    box-shadow: 0 0 12px var(--tc-accent-dim-rgba);
 }
 
 .btn-tc-outline {

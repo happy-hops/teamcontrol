@@ -1,0 +1,18 @@
+{% block card %}
+    <div class="card">
+        {% block card_header %}
+            {% if card_title is defined %}
+                <h5 class="card-header">{{ card_title }}</h5>
+            {% endif %}
+        {% endblock %}
+        <div class="card-body">
+            {% block card_body %}
+            {% endblock %}
+        </div>
+        {% block card_footer %}
+            {% if card_footer is defined %}
+                <div class="card-footer"></div>
+            {% endif %}
+        {% endblock %}
+    </div>
+{% endblock %}

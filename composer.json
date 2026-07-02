@@ -14,7 +14,6 @@
         "nelmio/cors-bundle": "^2.6.1",
         "nelmio/security-bundle": "^3.9",
         "stof/doctrine-extensions-bundle": "^1.15.3",
-        "symfony/apache-pack": "^1.0.1",
         "symfony/asset": "8.1.*",
         "symfony/asset-mapper": "8.1.*",
         "symfony/cache": "8.1.*",
@@ -43,7 +42,7 @@
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^4.3.1",
         "phpstan/extension-installer": "^1.4.3",
-        "phpstan/phpstan": "^2.2.2",
+        "phpstan/phpstan": "^2.2.3",
         "phpstan/phpstan-symfony": "^2.0.20",
         "symfony/debug-bundle": "8.1.*",
         "symfony/maker-bundle": "^1.67",
